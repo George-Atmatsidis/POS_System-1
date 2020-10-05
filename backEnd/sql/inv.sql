@@ -20,12 +20,12 @@ CREATE TABLE Invoices (
   );
   
 CREATE TABLE Inventory (
-	partNo INT PRIMARY KEY,
-	name VARCHAR(50),
-    price REAL,
-    descption VARCHAR(200),
-    size VARCHAR(50),
-    provider VARCHAR(50)
+	 partNo INT PRIMARY KEY,
+	 name VARCHAR(50),
+   price REAL,
+   descption VARCHAR(200),
+   size VARCHAR(50),
+   provider VARCHAR(50)
   );
 
 CREATE TABLE WorkOrders (
@@ -67,9 +67,10 @@ CREATE TABLE Addresses (
   );
 
 CREATE TABLE invoice_inventory (
-	invID INT,
-    partNo INT,
-    quantity INT,
-	PRIMARY KEY (invID, partNo)
+	 invID INT,
+   partNo INT,
+   quantity INT,
+	 PRIMARY KEY (invID, partNo)
   );
   
+--Insert Test data into table--
