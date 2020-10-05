@@ -1,3 +1,14 @@
+--Delete Existing Tables--
+DROP TABLE Invoices;
+DROP TABLE Inventory;
+DROP TABLE invoice_inventory;
+DROP TABLE WorkOrders;
+DROP TABLE Quotes;
+DROP TABLE Employees;
+DROP TABLE Customers;
+DROP TABLE Addresses;
+
+
 
 -- Create Tables -- 
 CREATE TABLE Invoices (
@@ -42,7 +53,7 @@ CREATE TABLE Customers (
    cusID INT PRIMARY KEY,
    name VARCHAR(20),
    phone VARCHAR(15),
-   credit bigint(16),
+   credit MONEY,
    email VARCHAR(100),
    addrID VARCHAR(20)
   );
