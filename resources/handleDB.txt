@@ -1,0 +1,56 @@
+-- Login
+select username, role
+from employees
+where username = 'Cade' and password = '1234';
+
+-- register
+insert into employees(name, userName, password, empNo, address, phone, role)
+ VALUES ('AAA AAAAA', 'aaaa', '1234', 9999,'XXX Jonesboro, AR, 72142', '000-000-0000', 'admin');
+
+
+-- AR
+select AccountReceivable.*, customers.name
+from AccountReceivable, customers
+where accountNo = cusNo;
+
+
+
+-- im
+select partID, description, quantity, price
+from inventory
+where partID like '%125A%';
+
+-- im/detailed
+select *
+from inventory
+where partID = '45125A';
+
+-- im/classm
+select *
+from class;
+
+
+-- custm
+select cusNo, name, address, phone
+from customers
+where name like 'Red%';
+
+-- custm/detailed
+select *
+from customers
+where cusNo = 001;
+
+
+-- pc/inv
+-- if name is sent
+select invNo as ID, name, invDate, partID, sum(total) as total 
+from invoices, customers
+where invoices.cusNo = customers.cusNo and name = 'Redstone'
+group by invNo;
+
+
+-- if ID is sent
+select *
+from invoices
+where invNo = '30001';
+
