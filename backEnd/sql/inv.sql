@@ -30,6 +30,13 @@ CREATE TABLE Class (
     margin3 REAL
 );
 
+CREATE TABLE parts(
+	ID INT, -- invoice No/ WorkOrder No/ Quote No
+	partID VARCHAR(20),
+    quantity INT,
+    cost REAL
+);
+
 CREATE TABLE Invoices (
 	invNo INT PRIMARY KEY,
 	cusNo INT, 
@@ -39,21 +46,11 @@ CREATE TABLE Invoices (
     total REAL,
     invDate DATE
   );
-  
-CREATE TABLE parts(
-	invNo INT,
-	partID VARCHAR(20),
-    quantity INT,
-    cost REAL
-);
 
 CREATE TABLE WorkOrders (
-	workNo INT,
+	workNo INT PRIMARY KEY,
 	cusNo INT, 
 	empNo INT,
-    partID VARCHAR(20),
-    quantity INT,
-    cost REAL,
     subTotal REAL,
 	taxTotal REAL,
     total REAL,
@@ -61,12 +58,9 @@ CREATE TABLE WorkOrders (
   );
 
 CREATE TABLE Quotes (
-	quoteNo INT,
+	quoteNo INT PRIMARY KEY,
 	cusNo INT, 
 	empNo INT,
-    partID VARCHAR(20),
-    quantity INT,
-    cost REAL,
     subTotal REAL,
 	taxTotal REAL,
     total REAL,
@@ -139,26 +133,34 @@ INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) V
 INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) VALUES (30002, 002, 1001, 245, 42.88, 287.88, '2020-10-05');
 INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) VALUES (30003, 001, 1003, 400, 70, 470, '2020-10-10');
 
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '45125A', 2, 80);
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '184125A', 3, 80.00);
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '175999B', 1, 80.00);
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30002, '789000B', 10, 4.5);
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30002, '123456A', 2, 100);
-INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30003, '45125C', 1, 400);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30001, '45125A', 2, 80);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30001, '184125A', 3, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30001, '175999B', 1, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30002, '789000B', 10, 4.5);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30002, '123456A', 2, 100);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (30003, '45125C', 1, 400);
 
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '45125A', 2, 80, 160.00, 28.00, 188.00, '2020-10-01');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '184125A', 3, 80.00, 240.00, 42.00, 282.00, '2020-10-01');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '175999B', 1, 80.00, 80.00, 14.00, 94.00, '2020-10-01');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1001, '789000B', 10, 4.5, 245, 42.88, 287.88, '2020-10-05');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1002, '123456A', 2, 100, 245, 42.88, 287.88, '2020-10-05');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20003, 003, 1003, '45125C', 1, 400, 400, 70, 470, '2020-10-10');
+INSERT INTO WorkOrders (workNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, 160.00, 28.00, 188.00, '2020-10-01');
+INSERT INTO WorkOrders (workNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (20002, 002, 1001, 245, 42.88, 287.88, '2020-10-05');
+INSERT INTO WorkOrders (workNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (20003, 003, 1003, 400, 70, 470, '2020-10-10');
 
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '45125A', 2, 80, 160.00, 28.00, 188.00, '2020-10-01');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '184125A', 3, 80.00, 240.00, 42.00, 282.00, '2020-10-01');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '175999B', 1, 80.00, 80.00, 14.00, 94.00, '2020-10-01');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1001, '789000B', 10, 4.5, 245, 42.88, 287.88, '2020-10-05');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1002, '123456A', 2, 100, 245, 42.88, 287.88, '2020-10-05');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10003, 003, 1003, '45125C', 1, 400, 400, 70, 470, '2020-10-10');
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20001, '45125A', 2, 80);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20001, '184125A', 3, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20001, '175999B', 1, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20002, '789000B', 10, 4.5);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20002, '123456A', 2, 100);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (20003, '45125C', 1, 400);
+
+INSERT INTO Quotes (quoteNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, 160.00, 28.00, 188.00, '2020-10-01');
+INSERT INTO Quotes (quoteNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (10002, 002, 1001, 245, 42.88, 287.88, '2020-10-05');
+INSERT INTO Quotes (quoteNo, cusNo, empNo, subTotal, taxTotal, total, date) VALUES (10003, 003, 1003, 400, 70, 470, '2020-10-10');
+
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10001, '45125A', 2, 80);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10001, '184125A', 3, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10001, '175999B', 1, 80.00);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10002, '789000B', 10, 4.5);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10002, '123456A', 2, 100);
+INSERT INTO Parts (ID, partID, quantity, cost) VALUES (10003, '45125C', 1, 400);
 
 INSERT INTO AccountReceivable (accountNo, amount, dateDue) VALUES (001, 12000.23, '2020-10-05');
 INSERT INTO AccountReceivable (accountNo, amount, dateDue) VALUES (002, 10000.00, '2020-10-05');
