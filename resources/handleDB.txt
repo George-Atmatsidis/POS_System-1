@@ -43,14 +43,14 @@ where cusNo = 001;
 
 -- pc/inv
 -- if name is sent
-select invNo as ID, name, invDate, partID, sum(total) as total 
-from invoices, customers
+select invoices.invNo as ID, name, invDate, partID, total 
+from invoices, parts, customers
 where invoices.cusNo = customers.cusNo and name = 'Redstone'
-group by invNo;
+group by invoices.invNo;
 
 
 -- if ID is sent
-select *
-from invoices
-where invNo = '30001';
+select invNo, inventory.*
+from parts, inventory
+where invNo = '30001' and parts.partID = inventory.partID;
 
