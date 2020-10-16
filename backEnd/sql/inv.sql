@@ -6,6 +6,7 @@
 	DROP TABLE Customers;
     DROP TABLE class;
 	DROP TABLE invoices;
+    DROP TABLE parts;
     DROP TABLE Bills;
     DROP TABLE accountReceivable;
 
@@ -30,17 +31,21 @@ CREATE TABLE Class (
 );
 
 CREATE TABLE Invoices (
-	invNo INT,
+	invNo INT PRIMARY KEY,
 	cusNo INT, 
 	empNo INT,
-    partID VARCHAR(20),
-    quantity INT,
-    cost REAL,
     subTotal REAL,
 	taxTotal REAL,
     total REAL,
     invDate DATE
   );
+  
+CREATE TABLE parts(
+	invNo INT,
+	partID VARCHAR(20),
+    quantity INT,
+    cost REAL
+);
 
 CREATE TABLE WorkOrders (
 	workNo INT,
@@ -130,25 +135,29 @@ INSERT INTO Class (classNo, description, margin1, margin2, margin3) VALUES (001,
 INSERT INTO Class (classNo, description, margin1, margin2, margin3) VALUES (002, 'Flywheel', 1.4, 1.8, 2.2);
 INSERT INTO Class (classNo, description, margin1, margin2, margin3) VALUES (003, 'Tire', 1.1, 1.2, 1.5);
 
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30001, 001, 1000, '45125A', 2, 80, 160.00, 28.00, 188.00, '2020-10-01');
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30001, 001, 1000, '184125A', 3, 80.00, 240.00, 42.00, 282.00, '2020-10-01');
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30001, 001, 1000, '175999B', 1, 80.00, 80.00, 14.00, 94.00, '2020-10-01');
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30002, 002, 1001, '789000B', 10, 4.5, 45, 7.875, 52.875, '2020-10-05');
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30002, 002, 1002, '123456A', 2, 100, 200, 35.00, 235.00, '2020-10-05');
-INSERT INTO Invoices (invNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, invDate) VALUES (30003, 001, 1003, '45125C', 1, 400, 400, 70, 470, '2020-10-10');
+INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) VALUES (30001, 001, 1000, 480.00, 84.00, 564.00, '2020-10-01');
+INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) VALUES (30002, 002, 1001, 245, 42.88, 287.88, '2020-10-05');
+INSERT INTO Invoices (invNo, cusNo, empNo, subTotal, taxTotal, total, invDate) VALUES (30003, 001, 1003, 400, 70, 470, '2020-10-10');
+
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '45125A', 2, 80);
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '184125A', 3, 80.00);
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30001, '175999B', 1, 80.00);
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30002, '789000B', 10, 4.5);
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30002, '123456A', 2, 100);
+INSERT INTO Parts (invNo, partID, quantity, cost) VALUES (30003, '45125C', 1, 400);
 
 INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '45125A', 2, 80, 160.00, 28.00, 188.00, '2020-10-01');
 INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '184125A', 3, 80.00, 240.00, 42.00, 282.00, '2020-10-01');
 INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20001, 001, 1000, '175999B', 1, 80.00, 80.00, 14.00, 94.00, '2020-10-01');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1001, '789000B', 10, 4.5, 45, 7.875, 52.875, '2020-10-05');
-INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1002, '123456A', 2, 100, 200, 35.00, 235.00, '2020-10-05');
+INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1001, '789000B', 10, 4.5, 245, 42.88, 287.88, '2020-10-05');
+INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20002, 002, 1002, '123456A', 2, 100, 245, 42.88, 287.88, '2020-10-05');
 INSERT INTO WorkOrders (workNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (20003, 003, 1003, '45125C', 1, 400, 400, 70, 470, '2020-10-10');
 
 INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '45125A', 2, 80, 160.00, 28.00, 188.00, '2020-10-01');
 INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '184125A', 3, 80.00, 240.00, 42.00, 282.00, '2020-10-01');
 INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10001, 001, 1000, '175999B', 1, 80.00, 80.00, 14.00, 94.00, '2020-10-01');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1001, '789000B', 10, 4.5, 45, 7.875, 52.875, '2020-10-05');
-INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1002, '123456A', 2, 100, 200, 35.00, 235.00, '2020-10-05');
+INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1001, '789000B', 10, 4.5, 245, 42.88, 287.88, '2020-10-05');
+INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10002, 002, 1002, '123456A', 2, 100, 245, 42.88, 287.88, '2020-10-05');
 INSERT INTO Quotes (quoteNo, cusNo, empNo, partID, quantity, cost, subTotal, taxTotal, total, date) VALUES (10003, 003, 1003, '45125C', 1, 400, 400, 70, 470, '2020-10-10');
 
 INSERT INTO AccountReceivable (accountNo, amount, dateDue) VALUES (001, 12000.23, '2020-10-05');
