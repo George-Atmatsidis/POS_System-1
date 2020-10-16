@@ -50,7 +50,7 @@ group by invoices.invNo;
 
 
 -- if ID is sent
-select invNo, inventory.*
+select ID, inventory.*
 from parts, inventory
-where invNo = '30001' and parts.partID = inventory.partID;
+where ID = '30001' and parts.partID = inventory.partID;
 
