@@ -6,8 +6,10 @@ const port = 3000;
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.json('{ "name": "Cade" }');
-    console.log("Hello on server");
+    console.log(req.body.username);
+    console.log(req.body.password);
+    console.log(req.body.status);
+    res.send({ "status": "authorized"})
 });
 
 app.put('/', (req, res) => {
