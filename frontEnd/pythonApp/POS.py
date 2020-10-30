@@ -1,15 +1,44 @@
-import json
-import requests
+from json import dumps
 from datetime import datetime
 from time import sleep
 from mainMenu import mainMenu
 from clear import clear
+from server import server
+
+class pointOfSaleSystem:
+
+    def __init__(self, host):
+        self.server = server(host)
+        clear() # clear screen in prep for entry
+
+    def start(self):
+        print("Welcome to Powers POS\n\n")
+        self.login()
+
+    #login function presented to the user first
+    def login(self):
+        username = input("Please input your username: ")
+        password = input("Please input your password: ")
+
+        #create json to send
+        payload = {
+            "username": username,
+            "password": password,
+            "status": "authorizing"
+            }
+        payload = dumps(payload)
+
+        #send and recieve status
+        res = self.server.get(root='/', data=payload)
+        if (res["status"] == "authorized"):
+            main = mainMenu(self.server, username)
+            main.start()
+
+        #at this point the program is done
+        #return user to their prompt
+        clear()
 
 
-#setting global variables
-host = 'http://localhost:3000'
-user = ""
-header = { 'content-type': 'application/json' }
 
 #introduction
 print("This POS system is in the testing phase and does not gurentee complete support.\n"
@@ -18,48 +47,8 @@ print("This POS system is in the testing phase and does not gurentee complete su
 
 sleep(3)
 
-
-#login function presented to the user first
-def login():
-    print("Welcome to Powers POS\n\n")
-    username = input("Please input your username: ")
-    password = input("Please input your password: ")
-    user = username
-
-    #create json to send
-    payload = {
-        "username": username,
-        "password": password,
-        "status": "authorizing"
-        }
-    payload = json.dumps(payload)
-
-    #send and recieve status
-    res = requests.get(host, data=payload, headers=header)
-    response = json.loads(res.content)
-    if (response["status"] == "authorized"):
-        mainMenu(user)
-
-    #at this point the program is done
-    #return user to their prompt
-    clear()
-
 #start program
-clear()
-login()
+pointOfSale = pointOfSaleSystem('http://localhost:3000')
+pointOfSale.start()
 
-"""
-#test GET request
-r = requests.get(host)
-r = json.loads(r.json())
-#print(r["name"])
-
-#test PUT request
-payload = {
-    "name": userinput,
-}
-
-payload = json.dumps(payload)
-r = requests.put(host, data=payload, headers=header)
-print(r.text)
-"""
+#end of program

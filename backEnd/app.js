@@ -9,7 +9,9 @@ app.get('/', (req, res) => {
     console.log(req.body.username);
     console.log(req.body.password);
     console.log(req.body.status);
-    res.send({ "status": "authorized"})
+    res.send({ "username": req.body.username,
+        "role": "admin",
+        "status": "authorized"})
 });
 
 app.put('/', (req, res) => {
