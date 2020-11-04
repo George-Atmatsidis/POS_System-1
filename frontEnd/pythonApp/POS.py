@@ -40,7 +40,7 @@ class pointOfSaleSystem:
         payload = dumps(payload)
 
         #send and recieve status
-        res = self.server.get(root='/', data=payload)
+        res = self.server.get(route='/', data=payload)
         if (res["status"] == "authorized"):
             main = mainMenu(self.server, res["username"])
             main.start()
@@ -63,7 +63,7 @@ class pointOfSaleSystem:
             "role": role
         }
         payload = dumps(payload)
-        res = self.server.put(root="/", data=payload)
+        res = self.server.put(route="/", data=payload)
         if (res["status"] == "authorized"):
             print("Your username is:'"+res["username"]+"'\nSave it for your records")
             print("Press enter to continue")

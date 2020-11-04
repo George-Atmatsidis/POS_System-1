@@ -7,8 +7,8 @@ class server():
         self.host = host
         self.header =  { 'content-type': 'application/json' }
 
-    def get(self, root, data):
-        response = requests.get(self.host+root, data=data, headers=self.header)
+    def get(self, route, data):
+        response = requests.get(self.host+route, data=data, headers=self.header)
         #test wether the get request succeeded
         if (response):
             response = loads(response.content)
@@ -16,8 +16,8 @@ class server():
             raise ConnectionError("GET request failed")
         return response
 
-    def put(self, root, data):
-        response = requests.put(self.host+root, data=data, headers=self.header)
+    def put(self, route, data):
+        response = requests.put(self.host+route, data=data, headers=self.header)
         if (response):
             response = loads(response.content)
         else:
