@@ -15,3 +15,11 @@ class server():
         else:
             raise ConnectionError("GET request failed")
         return response
+
+    def put(self, root, data):
+        response = requests.put(self.host+root, data=data, headers=self.header)
+        if (response):
+            response = loads(response.content)
+        else:
+            raise ConnectionError("PUT request failed")
+        return response

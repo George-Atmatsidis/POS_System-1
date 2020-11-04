@@ -13,7 +13,18 @@ class pointOfSaleSystem:
 
     def start(self):
         print("Welcome to Powers POS\n\n")
-        self.login()
+        print("1. Login\n2. Register\n0. Exit\n")
+        userinput = int(input(">>>>:"))
+        while(userinput < 0 and userinput > 2):
+            print("Please input a valid menu choice.")
+            userinput = int(input(">>>>:"))
+        if (userinput == 1):
+            self.login()
+        elif (userinput == 2):
+            self.register()
+        #clear and return to shell
+        clear()
+            
 
     #login function presented to the user first
     def login(self):
@@ -31,13 +42,34 @@ class pointOfSaleSystem:
         #send and recieve status
         res = self.server.get(root='/', data=payload)
         if (res["status"] == "authorized"):
-            main = mainMenu(self.server, username)
+            main = mainMenu(self.server, res["username"])
             main.start()
 
-        #at this point the program is done
-        #return user to their prompt
-        clear()
+    #allows the user to register new account
+    def register(self):
+        name = input("Full Name:")
+        password = input("Password:")
+        empID = input("Employee ID:")
+        addr = input("Physical Address:")
+        PN = input("Phone Number:")
+        role = input("Role:")
 
+        payload = {
+            "name": name,
+            "password": password,
+            "employeeID": empID,
+            "address": addr,
+            "phoneNumber": PN,
+            "role": role
+        }
+        payload = dumps(payload)
+        res = self.server.put(root="/", data=payload)
+        if (res["status"] == "authorized"):
+            print("Your username is:'"+res["username"]+"'\nSave it for your records")
+            print("Press enter to continue")
+            input()
+            main = mainMenu(self.server, res["username"])
+            main.start()
 
 
 #introduction

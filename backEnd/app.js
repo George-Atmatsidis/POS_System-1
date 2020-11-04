@@ -16,7 +16,11 @@ app.get('/', (req, res) => {
 
 app.put('/', (req, res) => {
     console.log(req.body.name);
-    res.send("Recieved")
+    res.send({
+        "username": "cade",
+        "role": "admin",
+        "status": "authorized"
+    })
 });
 
 app.listen(port, () =>{

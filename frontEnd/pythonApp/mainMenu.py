@@ -14,7 +14,7 @@ class mainMenu():
         print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Main Menu\t\t {user}') #Header
         print("\n\n")
         #Print menu options
-        menuOptions = "1. Accounts Recievable\n2. Inventory Management\n3. Customer Management\n4. Employee Management\n5. Parts Counter Menu\n\n"
+        menuOptions = "1. Accounts Recievable\n2. Inventory Management\n3. Customer Management\n4. Employee Management\n5. Parts Counter Menu\n0. Exit\n\n"
         print(menuOptions)
 
     #determines a good user choice
@@ -26,6 +26,7 @@ class mainMenu():
                 isBad = False #break loop
             except:
                 print("Please enter a valid input")
+            
         returned = False
         if  (userChoice == 1):
             #go to Accounts Recievable Menu
@@ -41,6 +42,9 @@ class mainMenu():
             pass
         elif (userChoice == 5):
             #go to Parts Counter Menu
+            pass
+        elif (userChoice == 0):
+            #exit program
             pass
         else:
             print("Please enter valid menu choice\n")
