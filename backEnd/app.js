@@ -5,22 +5,15 @@ const port = 3000;
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     console.log(req.body.username);
     console.log(req.body.password);
-    console.log(req.body.status);
-    res.send({ "username": req.body.username,
-        "role": "admin",
-        "status": "authorized"})
+    res.sendStatus(200);
 });
 
-app.put('/', (req, res) => {
+app.post('/register', (req, res) => {
     console.log(req.body.name);
-    res.send({
-        "username": "cade",
-        "role": "admin",
-        "status": "authorized"
-    })
+    res.sendStatus(200);
 });
 
 app.listen(port, () =>{
