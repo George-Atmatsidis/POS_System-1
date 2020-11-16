@@ -8,6 +8,13 @@ class server():
         self.header =  { 'content-type': 'application/json' }
         self.session = requests.Session()
 
+    def set_user(self, user):
+        self.user = user
+        return user
+
+    def get_user(self):
+        return self.user
+
     def get(self, route, data):
         response = self.session.get(self.host+route, data=data, headers=self.header)
         #test wether the get request succeeded

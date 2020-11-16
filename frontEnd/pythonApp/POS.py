@@ -25,9 +25,9 @@ class pointOfSaleSystem:
 
             #login
             if (userinput == 1):
-                username = self.login()
+                username = self.server.set_user(self.login()) #server stores username
                 if (username): #login succeeded
-                    main = mainMenu(self.server, username)
+                    main = mainMenu(self.server)
                     main.start()
                     again = False
                 else: 
@@ -36,9 +36,9 @@ class pointOfSaleSystem:
             
             #register
             elif (userinput == 2):
-                username = self.register()
+                username = self.server.set_user(self.register())
                 if (username):
-                    main = mainMenu(self.server, username)
+                    main = mainMenu(self.server)
                     main.start()
                     again = False
                 else:

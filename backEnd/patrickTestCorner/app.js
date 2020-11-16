@@ -40,21 +40,7 @@ app.use(sess);
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    console.log(req.body.username);
-    console.log(req.body.password);
-    console.log(req.body.status);
-    res.send({ "username": req.body.username,
-        "role": "admin",
-        "status": "authorized"})
-});
-
-app.put('/', (req, res) => {
-    console.log(req.body.name);
-    res.send("Recieved")
-});
-
-app.put('/register', async (req, res) => {
+app.put('/login', async (req, res) => {
     const {email, password} = req.body; //add rest of data needed...
     
     //check data...
@@ -77,15 +63,15 @@ app.put('/register', async (req, res) => {
     // add user to db via knex?
     try {
         await Knex('user').insert(user);
-        return res.sendstatus good
+        return res.sendstatus(200);  //succeeded
     } catch (err) {
-        return res.sendstatus fail
+        return res.sendstatus(401); //failed
     }
 
 })
 
-app.post('/login', async (req, res) => {
-    const {email, password} = req.body; //add rest of data needed...
+app.post('/register', async (req, res) => {
+    const {name, email, password, employeeID, address, phoneNumber} = req.body; //add rest of data needed...
 
     //check data...
     if (!email || !password){  
@@ -103,15 +89,16 @@ app.post('/login', async (req, res) => {
                 role: user.role,
                 phoneNumber: user.phoneNumber
             };
-        } else{ //password dont match
-        return res.sendstatus(401) // 
+        } else{ //passwords dont match
+        return res.sendstatus(401) 
         }
     }  else { //email doesn't match
-        res.sendstatus(401) //
+        res.sendstatus(401)
     }
+    return res.sendStatus(200) //user registered
 })
 
-app.get('/im/pm', async (req, res) => {  // DO it for all Routes asap
+app.get('/inventoryManagement/partsManagement', async (req, res) => {  // DO it for all Routes asap
     res.sendStatus(501); //Not Implemented
 })
 
