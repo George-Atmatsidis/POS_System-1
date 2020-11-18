@@ -41,15 +41,15 @@ app.use(sess);
 app.use(express.json())
 
 app.put('/login', async (req, res) => {
-    const {email, password} = req.body; //add rest of data needed...
+   // const {email, password} = req.body; //add rest of data needed...
     
     //check data...
-    if (!email || !password){  
-        return res.sendStatus(400); //Bad Req.
-    }
+   // if (!email || !password){  
+   //     return res.sendStatus(400); //Bad Req.
+   // }
 
     //hash password
-    const passwordHash = await argon2.hash(password);
+    //const passwordHash = await argon2.hash(password);
     
     //Add User to DB
 
@@ -61,58 +61,142 @@ app.put('/login', async (req, res) => {
     //}
 
     // add user to db via knex?
-    try {
-        await Knex('user').insert(user);
-        return res.sendstatus(200);  //succeeded
-    } catch (err) {
-        return res.sendstatus(401); //failed
-    }
-
+   // try {
+    //    await Knex('user').insert(user);
+    //    return res.sendstatus(200);  //succeeded
+    //} catch (err) {
+    //    return res.sendstatus(401); //failed
+    //}
+    res.sendStatus(501); //Not Implemented
 })
 
 app.post('/register', async (req, res) => {
-    const {name, email, password, employeeID, address, phoneNumber} = req.body; //add rest of data needed...
+   // const {name, email, password, employeeID, address, phoneNumber} = req.body; //add rest of data needed...
 
     //check data...
-    if (!email || !password){  
-        return res.sendStatus(400); //Bad Req.
-    }
+    //if (!email || !password){  
+    //    return res.sendStatus(400); //Bad Req.
+    //}
 
-    const user = await database.getUser(email);
+   // const user = await database.getUser(email);
 
-    if (user) {
-        const passwordHash = user.passwordHash;
+   // if (user) {
+   //     const passwordHash = user.passwordHash;
 
-        if ( await argon2.verify(passwordHash, password) ) {
-            req.session.user = {
-                email: user.email,
-                role: user.role,
-                phoneNumber: user.phoneNumber
-            };
-        } else{ //passwords dont match
-        return res.sendstatus(401) 
-        }
-    }  else { //email doesn't match
-        res.sendstatus(401)
-    }
-    return res.sendStatus(200) //user registered
+   //     if ( await argon2.verify(passwordHash, password) ) {
+    //        req.session.user = {
+    //            email: user.email,
+   //             role: user.role,
+   //             phoneNumber: user.phoneNumber
+   //         };
+   //     } else{ //passwords dont match
+   //     return res.sendstatus(401) 
+   //     }
+   // }  else { //email doesn't match
+    //    res.sendstatus(401)
+   // }
+  //  return res.sendStatus(200) //user registered
+
+  res.sendStatus(501); //Not Implemented
+
 })
 
 app.get('/inventoryManagement/partsManagement', async (req, res) => {  // DO it for all Routes asap
     res.sendStatus(501); //Not Implemented
 })
 
-app.listen(port, () =>{
-    console.log("Listening on port 3000\n")
-});
+app.put('/inventoryManagement/partsManagement/add', async (req, res) => {
+   // if (!req.session.user) {
+   //     return res.send(401); //unauth
+   // }
 
-app.put('/inventory', async (req, res) => {
-    if (!req.session.user) {
-        return res.send(401); //unauth
-    }
-
-    const { partnumber, partname, quantity} = req.body;
+    //const { partnumber, partname, quantity} = req.body;
 
     //if(!partnumber...)
     // return res.sendStatus(400)
+    res.sendStatus(501); //Not Implemented
 })
+
+app.get('/accountsRecievable', async (req, res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('accountsRecievable/paid', async (req, res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/inventoryManagement/partsManagement/detailed', async (req, res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/inventoryManagement/classManagement', async (req, res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('/inventoryManagement/classmanagement/update', async (req, res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/customerManagement', async (req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/customerManagement/detailed', async (req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/customerManagement/add', async (req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.put('/customerManagement/add', async (req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/employeeManagement', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/employeeManagement/detailed', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('/employeeManagement/add', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/partsCounter/invoice', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('/partsCounter/invoice/add', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.put('/partsCounter/workOrder/update', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/partsCounter/history', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/partsCounter/quote', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('/partsCounter/quote/add', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.get('/partsCounter/workOrder', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.post('/partsCounter/workOrder/add', async(req,res) =>{
+    res.sendStatus(501); //Not Implemented
+})
+
+app.listen(port, () =>{
+    console.log("Listening on port 3000\n")
+});
