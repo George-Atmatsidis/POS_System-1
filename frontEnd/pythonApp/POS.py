@@ -1,7 +1,7 @@
 from json import dumps
 from datetime import datetime
 from time import sleep
-from mainMenu import mainMenu
+from mainMenu import MainMenu
 from clear import clear
 from server import server
 
@@ -27,7 +27,7 @@ class pointOfSaleSystem:
             if (userinput == 1):
                 username = self.server.set_user(self.login()) #server stores username
                 if (username): #login succeeded
-                    main = mainMenu(self.server)
+                    main = MainMenu(self.server)
                     main.start()
                     again = False
                 else: 
@@ -38,7 +38,7 @@ class pointOfSaleSystem:
             elif (userinput == 2):
                 username = self.server.set_user(self.register())
                 if (username):
-                    main = mainMenu(self.server)
+                    main = MainMenu(self.server)
                     main.start()
                     again = False
                 else:

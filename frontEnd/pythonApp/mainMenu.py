@@ -3,7 +3,7 @@ from datetime import date
 from server import server
 import accountsRecievable
 
-class mainMenu():
+class MainMenu:
 
     def __init__(self, server):
         self.server = server

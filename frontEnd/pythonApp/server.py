@@ -2,7 +2,7 @@
 import requests
 from json import loads
 
-class server():
+class server:
     def __init__(self, host):
         self.host = host
         self.header =  { 'content-type': 'application/json' }
@@ -15,8 +15,11 @@ class server():
     def get_user(self):
         return self.user
 
-    def get(self, route, data):
-        response = self.session.get(self.host+route, data=data, headers=self.header)
+    def get(self, route, data=None):
+        if(data):
+            response = self.session.get(self.host+route, data=data, headers=self.header)
+        else: #no data to pass
+            response = self.session.get(self.host+route, headers=self.header)
         #test wether the get request succeeded
         if (response):
             try:

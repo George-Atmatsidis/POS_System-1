@@ -1,8 +1,9 @@
 from clear import clear
 from server import server
 from datetime import date
+import bills_Recievables
 
-class AccountsRecievable():
+class AccountsRecievable:
     def __init__(self, server):
         self.server = server
         self.user = server.get_user()
@@ -28,11 +29,11 @@ class AccountsRecievable():
             
         returned = False
         if  (userChoice == 1):
-            #go to Bills
-            pass
+            bills = bills_Recievables.Bills(self.server)
+            bills.start()
         elif (userChoice  == 2):
-            #go to Recievables
-            pass
+            recievables = bills_Recievables.Recievables(self.server)
+            recievables.start()
         elif (userChoice == 0):
             #exit program
             pass
