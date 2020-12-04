@@ -19,5 +19,8 @@ class Recievables:
         self.user = server.get_user()
         clear()
     def start(self):
-        pass
+        #should return a list of dictionaries: one for each recievable
+        res = server.get(route="/accountsRecievable")
+        #need to seperate the responses
+        
 

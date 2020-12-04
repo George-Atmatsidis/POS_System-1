@@ -1,6 +1,6 @@
 #server class wraps requests in order to simplify calls
 import requests
-from json import loads
+import json
 
 class server:
     def __init__(self, host):
@@ -23,9 +23,13 @@ class server:
         #test wether the get request succeeded
         if (response):
             try:
-                response = loads(response.content)
-            except ValueError:
-                print("no content")
+                response = json.loads(response.content)
+            except json.decoder.JSONDecodeError as e:
+                if (e.msg == "Extra data error"): #process multiple data entries
+                    response = []
+                    for jsonObj in response.content:
+                        jsondict = json.loads(jsonObj)
+                        response.append(jsondict)
         else:
             raise ConnectionError("PUT request failed")
         return response
@@ -34,9 +38,13 @@ class server:
         response = self.session.put(self.host+route, data=data, headers=self.header)
         if (response):
             try:
-                response = loads(response.content)
-            except ValueError:
-                print("no content")
+                response = json.loads(response.content)
+            except json.decoder.JSONDecodeError as e:
+                if (e.msg == "Extra data error"): #process multiple data entries
+                    response = []
+                    for jsonObj in response.content:
+                        jsondict = json.loads(jsonObj)
+                        response.append(jsondict)
         else:
             raise ConnectionError("PUT request failed")
         return response
@@ -45,9 +53,13 @@ class server:
         response = self.session.post(self.host+route, data=data, headers=self.header)
         if (response):
             try:
-                response = loads(response.content)
-            except ValueError:
-                print("no content")
+                response = json.loads(response.content)
+            except json.decoder.JSONDecodeError as e:
+                if (e.msg == "Extra data error"): #process multiple data entries
+                    response = []
+                    for jsonObj in response.content:
+                        jsondict = json.loads(jsonObj)
+                        response.append(jsondict)
         else:
             raise ConnectionError("POST request failed")
         return response
