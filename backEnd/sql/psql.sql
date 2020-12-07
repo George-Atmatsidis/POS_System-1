@@ -14,7 +14,7 @@
 CREATE TABLE Employees (
 	name VARCHAR(20),
 	userName VARCHAR(20) UNIQUE,
-	password VARCHAR(20),
+	password VARCHAR(20) NOT NULL,
 	empNo INT PRIMARY KEY,
 	address VARCHAR(50),
 	phone VARCHAR(16),
@@ -23,7 +23,7 @@ CREATE TABLE Employees (
   
 CREATE TABLE Customers (
 	cusNo INT PRIMARY KEY,
-	name VARCHAR(50),
+	name VARCHAR(50) NOT NULL,
 	phone VARCHAR(16),
 	credit bigint CHECK(credit >= 0),
 	email VARCHAR(100),
