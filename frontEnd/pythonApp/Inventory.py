@@ -1,23 +1,20 @@
 from clear import clear
 from datetime import date
 from server import server
-import accountsRecievable
-import Inventory
-import PartsCounter
 
-class MainMenu:
+class InventoryMenu:
 
     def __init__(self, server):
         self.server = server
         self.user = server.get_user()
 
     #helper function for start
-    def __printMainMenu__(self):
+    def __printMenu__(self):
         clear()
-        print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Main Menu\t\t {self.user}') #Header
+        print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Inventory Menu\t\t {self.user}') #Header
         print("\n\n")
         #Print menu options
-        menuOptions = "1. Accounts Recievable\n2. Inventory Management\n3. Customer Management\n4. Employee Management\n5. Parts Counter Menu\n0. Exit\n\n"
+        menuOptions = "1. Parts Management\n2. Class Management\n0. Exit\n\n"
         print(menuOptions)
 
     #determines a good user choice
@@ -34,20 +31,11 @@ class MainMenu:
             
             #Router
             if  (userChoice == 1):
-                AR = accountsRecievable.AccountsRecievable(self.server)
-                AR.start()
+                #go to parts management
+                pass
             elif (userChoice  == 2):
-                IM = Inventory.InventoryMenu(self.server)
-                IM.start()
-            elif (userChoice == 3):
-                #go to Customer Management (endpoint)
+                #go to class management
                 pass
-            elif (userChoice == 4):
-                #go to Employee Management (endpoint)
-                pass
-            elif (userChoice == 5):
-                PC = PartsCounter.PartsCounterMenu(self.server)
-                PC.start()
             elif (userChoice == 0):
                 returned = False #exit out of current menu 
             else:
@@ -58,7 +46,7 @@ class MainMenu:
     def start(self):
         good = True #used to set if there is an error
         while (good):
-            self.__printMainMenu__()
+            self.__printMenu__()
             good = self.__determineChoice__()
 
         return good

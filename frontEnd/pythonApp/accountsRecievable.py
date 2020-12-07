@@ -20,32 +20,33 @@ class AccountsRecievable:
     #determines a good user choice
     def __determineChoice__(self):
         isBad = True
+        returned = True
         while(isBad):
-            try:
-                userChoice = int(input(">>>>:"))
-                isBad = False #break loop
-            except:
-                print("Please enter a valid input")
+            while(isBad):
+                try:
+                    userChoice = int(input(">>>>:"))
+                    isBad = False #break loop
+                except:
+                    print("Please enter a valid input")
             
-        returned = False
-        if  (userChoice == 1):
-            bills = bills_Recievables.Bills(self.server)
-            bills.start()
-        elif (userChoice  == 2):
-            recievables = bills_Recievables.Recievables(self.server)
-            recievables.start()
-        elif (userChoice == 0):
-            #exit program
-            pass
-        else:
-            print("Please enter valid menu choice\n")
-            returned = True #needs to ask again
+            #Router
+            if  (userChoice == 1):
+                recievables = bills_Recievables.Recievables(self.server)
+                recievables.start()
+            elif (userChoice  == 2):
+                bills = bills_Recievables.Bills(self.server)
+                bills.start()
+            elif (userChoice == 0):
+                returned = False #exit out of current menu 
+            else:
+                print("Please enter valid menu choice\n")
+                isBad = True #needs to ask again
         return returned
 
     def start(self):
         good = True #used to set if there is an error
-        self.__printMenu__()
-        while (self.__determineChoice__()):
-            continue
+        while (good):
+            self.__printMenu__()
+            good = self.__determineChoice__()
 
         return good

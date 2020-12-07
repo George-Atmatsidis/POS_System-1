@@ -1,5 +1,6 @@
 #server class wraps requests in order to simplify calls
 import requests
+from time import sleep
 import json
 
 class server:
@@ -31,7 +32,11 @@ class server:
                         jsondict = json.loads(jsonObj)
                         response.append(jsondict)
         else:
-            raise ConnectionError("PUT request failed")
+            if(response.status_code == 501):
+                print("NOT IMPLEMENTED")
+                sleep(2)
+            else:
+                raise ConnectionError("GET request failed")
         return response
 
     def put(self, route, data):
@@ -46,7 +51,11 @@ class server:
                         jsondict = json.loads(jsonObj)
                         response.append(jsondict)
         else:
-            raise ConnectionError("PUT request failed")
+            if(response.status_code == 501):
+                print("NOT IMPLEMENTED")
+                sleep(2)
+            else:
+                raise ConnectionError("GET request failed")
         return response
 
     def post(self, route, data):
@@ -61,5 +70,9 @@ class server:
                         jsondict = json.loads(jsonObj)
                         response.append(jsondict)
         else:
-            raise ConnectionError("POST request failed")
+            if(response.status_code == 501):
+                print("NOT IMPLEMENTED")
+                sleep(2)
+            else:
+                raise ConnectionError("GET request failed")
         return response

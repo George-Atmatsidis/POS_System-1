@@ -123,4 +123,6 @@ sleep(3)
 pointOfSale = pointOfSaleSystem('http://localhost:3000')
 pointOfSale.start()
 
+print("Goodbye!")
+
 #end of program

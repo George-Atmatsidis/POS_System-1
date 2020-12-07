@@ -11,6 +11,11 @@ app.get('/login', (req, res) => {
     res.sendStatus(200);
 });
 
+app.get('/accountsRecievable', (req, res) => {
+    console.log("GET request on '/accountsRecievable'\n");
+    res.sendStatus(501);
+});
+
 app.post('/register', (req, res) => {
     console.log(req.body.name);
     res.sendStatus(200);

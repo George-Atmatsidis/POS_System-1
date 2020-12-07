@@ -1,11 +1,8 @@
 from clear import clear
 from datetime import date
 from server import server
-import accountsRecievable
-import Inventory
-import PartsCounter
 
-class MainMenu:
+class PartsCounterMenu:
 
     def __init__(self, server):
         self.server = server
@@ -14,10 +11,10 @@ class MainMenu:
     #helper function for start
     def __printMainMenu__(self):
         clear()
-        print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Main Menu\t\t {self.user}') #Header
+        print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Parts Counter Menu\t\t {self.user}') #Header
         print("\n\n")
         #Print menu options
-        menuOptions = "1. Accounts Recievable\n2. Inventory Management\n3. Customer Management\n4. Employee Management\n5. Parts Counter Menu\n0. Exit\n\n"
+        menuOptions = "1. Invoices\n2. Parts Look-Up\n3. Quotes\n4. Work Orders\n5. History\n0. Exit\n\n"
         print(menuOptions)
 
     #determines a good user choice
@@ -34,20 +31,20 @@ class MainMenu:
             
             #Router
             if  (userChoice == 1):
-                AR = accountsRecievable.AccountsRecievable(self.server)
-                AR.start()
+                #go to invoices
+                pass
             elif (userChoice  == 2):
-                IM = Inventory.InventoryMenu(self.server)
-                IM.start()
+                #go to parts look up
+                pass
             elif (userChoice == 3):
-                #go to Customer Management (endpoint)
+                #go to quotes
                 pass
             elif (userChoice == 4):
-                #go to Employee Management (endpoint)
+                #go to work orders
                 pass
             elif (userChoice == 5):
-                PC = PartsCounter.PartsCounterMenu(self.server)
-                PC.start()
+                #go to history
+                pass
             elif (userChoice == 0):
                 returned = False #exit out of current menu 
             else:

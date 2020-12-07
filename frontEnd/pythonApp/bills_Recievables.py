@@ -20,7 +20,7 @@ class Recievables:
         clear()
     def start(self):
         #should return a list of dictionaries: one for each recievable
-        res = server.get(route="/accountsRecievable")
+        res = self.server.get(route="/accountsRecievable")
         #need to seperate the responses
         
 
