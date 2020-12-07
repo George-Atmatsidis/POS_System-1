@@ -1,10 +1,10 @@
 -- Delete Existing Tables--
-	DROP TABLE IF EXISTS Inventory;
+	DROP TABLE IF EXISTS parts;
+    DROP TABLE IF EXISTS Inventory;
 	DROP TABLE IF EXISTS WorkOrders;
 	DROP TABLE IF EXISTS Quotes;
     DROP TABLE IF EXISTS class;
 	DROP TABLE IF EXISTS invoices;
-    DROP TABLE IF EXISTS parts;
     DROP TABLE IF EXISTS Employees;
 	DROP TABLE IF EXISTS Customers;
     DROP TABLE IF EXISTS Bills;
@@ -18,21 +18,21 @@ CREATE TABLE Employees (
 	empNo INT PRIMARY KEY,
 	address VARCHAR(50),
 	phone VARCHAR(16),
-	role VARCHAR(20) default ''
+	role VARCHAR(20) default '' -- Default data is blank
   );
   
 CREATE TABLE Customers (
 	cusNo INT PRIMARY KEY,
 	name VARCHAR(50),
 	phone VARCHAR(16),
-	credit bigint,
+	credit bigint CHECK(credit >= 0),
 	email VARCHAR(100),
 	address VARCHAR(50),
     billing VARCHAR(50),
     shipping VARCHAR(50),
-    cityTax REAL default 0.05,
-    stateTax REAL default 0.1,
-    federalTax REAL default 0.025,
+    cityTax REAL default 0.05 CHECK(cityTax >= 0),
+    stateTax REAL default 0.1 CHECK(stateTax >= 0),
+    federalTax REAL default 0.025 CHECK(federalTax >= 0),
     chargeMax float,
     currentCharge float
 );
@@ -49,9 +49,9 @@ CREATE TABLE Inventory (
 	partID VARCHAR(20) PRIMARY KEY,
 	description VARCHAR(100) default 'No description',
 	quantity INT,
-	price REAL,
+	price REAL CHECK(price >= 0),
     brand VARCHAR(50) default 'No brand',
-    cost REAL,
+    cost REAL CHECK(cost >= 0),
     source VARCHAR(50) default 'Unknown source',
 	classNo INT,
 	FOREIGN KEY(classNo) REFERENCES Class(classNo) ON UPDATE CASCADE ON DELETE RESTRICT
@@ -61,7 +61,8 @@ CREATE TABLE parts(
 	ID INT, -- invoice No/ WorkOrder No/ Quote No
 	partID VARCHAR(20), -- Inventory ID
     quantity INT,
-    cost REAL
+    cost REAL CHECK(cost >= 0),
+    FOREIGN KEY(partID) REFERENCES Inventory(partID) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE Invoices (
@@ -119,7 +120,7 @@ DROP TRIGGER IF EXISTS trg_add_parts_to_inv;
 
 DELIMITER //
 
-CREATE TRIGGER trg_add_parts_to_work -- when adding new invoice, add data of parts
+CREATE TRIGGER trg_add_parts_to_work -- when adding new work orders, add parts data from quotes
 AFTER INSERT ON workorders
 FOR EACH ROW
 BEGIN
