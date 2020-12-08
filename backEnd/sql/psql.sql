@@ -115,26 +115,35 @@ CREATE TABLE Bills(
 
 
 -- Create TRIGGERS --
-DROP TRIGGER IF EXISTS trg_add_parts_to_work;
-DROP TRIGGER IF EXISTS trg_add_parts_to_inv;
+DROP FUNCTION IF EXISTS proc_add_to_work();
+DROP FUNCTION IF EXISTS proc_add_to_inv();
 
-DELIMITER //
+CREATE FUNCTION proc_add_to_work() RETURNS trigger AS $proc_add_to_work$
+BEGIN
+INSERT INTO Parts (SELECT ID+1000, partID, quantity, cost FROM Parts WHERE ID = NEW.workNo - 1000);
+RETURN NEW;
+END;
+$proc_add_to_work$
+LANGUAGE plpgsql;
+
 CREATE TRIGGER trg_add_parts_to_work -- when adding new work orders, add parts data from quotes
 AFTER INSERT ON workorders
 FOR EACH ROW
-BEGIN
-INSERT INTO Parts (SELECT ID+1000, partID, quantity, cost FROM Parts WHERE ID = NEW.workNo - 1000);
-END;
-//
+EXECUTE FUNCTION proc_add_to_work();
 
-CREATE TRIGGER trg_add_parts_to_inv
-AFTER INSERT ON Invoices
-FOR EACH ROW
+
+CREATE FUNCTION proc_add_to_inv() RETURNS trigger AS $proc_add_to_inv$
 BEGIN
 INSERT INTO Parts (SELECT ID+1000, partID, quantity, cost FROM Parts WHERE ID = NEW.invNo - 1000);
+RETURN NEW;
 END;
-//
-DELIMITER ;
+$proc_add_to_inv$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_add_parts_to_inv -- when adding new work orders, add parts data from quotes
+AFTER INSERT ON Invoices
+FOR EACH ROW
+EXECUTE FUNCTION proc_add_to_inv();
 
 
 -- Insert Test data into table --
