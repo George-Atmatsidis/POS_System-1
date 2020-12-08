@@ -13,7 +13,11 @@ app.get('/login', (req, res) => {
 
 app.get('/accountsRecievable', (req, res) => {
     console.log("GET request on '/accountsRecievable'\n");
-    res.sendStatus(501);
+    res.json([
+        {AccountNumber:"001", CompanyName:"Redstone", AmountOwed:1200.23, DateDue:"10/05/2020"},
+        {AccountNumber: "002", CompanyName: "Gillis Inc.", AmountOwed:500.12, DateDue: "10/10/2020"},
+        {AccountNumber: "003", CompanyName: "Powers Trucking", AmountOwed:150.00, DateDue: "10/20/2020"}
+    ]);
 });
 
 app.post('/register', (req, res) => {
