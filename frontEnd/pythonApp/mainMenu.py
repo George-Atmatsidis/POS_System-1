@@ -1,7 +1,7 @@
 from clear import clear
 from datetime import date
 from server import server
-import accountsRecievable
+from EndPoints import Recievables, CustomerManagement, EmployeeManagement
 import Inventory
 import PartsCounter
 
@@ -34,17 +34,17 @@ class MainMenu:
             
             #Router
             if  (userChoice == 1):
-                AR = accountsRecievable.AccountsRecievable(self.server)
-                AR.start()
+                Rec = Recievables(self.server)
+                Rec.start()
             elif (userChoice  == 2):
                 IM = Inventory.InventoryMenu(self.server)
                 IM.start()
             elif (userChoice == 3):
-                #go to Customer Management (endpoint)
-                pass
+                CustM = CustomerManagement(self.server)
+                CustM.start()
             elif (userChoice == 4):
-                #go to Employee Management (endpoint)
-                pass
+                EmpM = EmployeeManagement(self.server)
+                EmpM.start()
             elif (userChoice == 5):
                 PC = PartsCounter.PartsCounterMenu(self.server)
                 PC.start()

@@ -1,6 +1,7 @@
 from clear import clear
 from datetime import date
 from server import server
+from EndPoints import Invoices, PartsLookUp, Quotes, WorkOrders, History
 
 class PartsCounterMenu:
 
@@ -31,20 +32,20 @@ class PartsCounterMenu:
             
             #Router
             if  (userChoice == 1):
-                #go to invoices
-                pass
+                Inv = Invoices(self.server)
+                Inv.start()
             elif (userChoice  == 2):
-                #go to parts look up
-                pass
+                PLU = PartsLookUp(self.server)
+                PLU.start()
             elif (userChoice == 3):
-                #go to quotes
-                pass
+                quotes = Quotes(self.server)
+                quotes.start()
             elif (userChoice == 4):
-                #go to work orders
-                pass
+                workOrders = WorkOrders(self.server)
+                workOrders.start()
             elif (userChoice == 5):
-                #go to history
-                pass
+                history = History(self.server)
+                history.start()
             elif (userChoice == 0):
                 returned = False #exit out of current menu 
             else:

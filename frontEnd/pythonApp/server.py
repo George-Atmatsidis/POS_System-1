@@ -26,7 +26,7 @@ class server:
             try:
                 response = json.loads(response.content)
             except json.decoder.JSONDecodeError as e:
-                print("no content")
+                pass
         else:
             if(response.status_code == 501):
                 print("NOT IMPLEMENTED")
@@ -41,13 +41,15 @@ class server:
             try:
                 response = json.loads(response.content)
             except json.decoder.JSONDecodeError as e:
-                print("no content")
+                pass
+        else:
             if(response.status_code == 501):
                 print("NOT IMPLEMENTED")
                 sleep(2)
             else:
-                raise ConnectionError("PUT request failed")
+                raise ConnectionError("GET request failed")
         return response
+
 
     def post(self, route, data):
         response = self.session.post(self.host+route, data=data, headers=self.header)
@@ -55,7 +57,7 @@ class server:
             try:
                 response = json.loads(response.content) #multiple entries will be read into arrays
             except json.decoder.JSONDecodeError as e:
-                print("no content")
+                pass
         else:
             if(response.status_code == 501):
                 print("NOT IMPLEMENTED")

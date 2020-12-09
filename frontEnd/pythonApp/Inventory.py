@@ -1,6 +1,7 @@
 from clear import clear
 from datetime import date
 from server import server
+from EndPoints import PartsManagement, ClassManagement
 
 class InventoryMenu:
 
@@ -31,11 +32,11 @@ class InventoryMenu:
             
             #Router
             if  (userChoice == 1):
-                #go to parts management
-                pass
+                PM = PartsManagement(self.server)
+                PM.start()
             elif (userChoice  == 2):
-                #go to class management
-                pass
+                CM = ClassManagement(self.server)
+                CM.start()
             elif (userChoice == 0):
                 returned = False #exit out of current menu 
             else:

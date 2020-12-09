@@ -20,6 +20,13 @@ app.get('/accountsRecievable', (req, res) => {
     ]);
 });
 
+app.put('/accountsRecievable/paid', (req, res) => {
+    console.log("PUT request sent on '/accountsRecievable/paid'\n");
+    console.log(req.body.AccountNumber);
+    console.log(req.body.AmountPaid)
+    res.sendStatus(200);
+});
+
 app.post('/register', (req, res) => {
     console.log(req.body.name);
     res.sendStatus(200);
