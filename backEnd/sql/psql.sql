@@ -226,3 +226,11 @@ UPDATE Employees SET role = 'admin' WHERE empNo = 1005; -- Change Role
 UPDATE Customers SET cusNo = 006 WHERE cusNo = 005; -- Test for foreign key: change cusNo in customers, then cusNos in invoice, workorder, and quote are changed
 UPDATE Employees SET empNo = 1006 WHERE empNo = 1005; -- Test for foreign key: change empNo in employees, then empNos in other tables are changed
 UPDATE Class SET classNo = 004 WHERE classNo = 003; -- Test for foreign key
+
+--Queries for each route--
+
+--"/login"--
+SELECT userName, password FROM Employees;
+
+--"/Register"--
+INSERT INTO Employees VALUES ()
