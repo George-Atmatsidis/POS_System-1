@@ -37,17 +37,20 @@ class server:
 
     def put(self, route, data):
         response = self.session.put(self.host+route, data=data, headers=self.header)
-        if (response):
+        if(response.status_code == 501):
+                print("NOT IMPLEMENTED")
+                sleep(2)
+        elif(response.status_code == 200):
+            pass
+        elif(response.status_code == 201):
+            pass
+        elif (response.content):
             try:
                 response = json.loads(response.content)
             except json.decoder.JSONDecodeError as e:
                 pass
         else:
-            if(response.status_code == 501):
-                print("NOT IMPLEMENTED")
-                sleep(2)
-            else:
-                raise ConnectionError("GET request failed")
+            raise ConnectionError("PUT request failed")
         return response
 
 

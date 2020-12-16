@@ -9,6 +9,11 @@
   "author": "Cade Powers",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "argon2": "^0.27.1",
+    "connect-redis": "^5.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "knex": "^0.21.13",
+    "redis": "^3.0.2"
   }
 }

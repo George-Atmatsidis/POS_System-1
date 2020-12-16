@@ -62,7 +62,7 @@ app.post('/register', (req, res) => {
     res.sendStatus(200);
 });
 
-app.use(sess);
+app.use(session);
 app.use(express.json())
 app.get('/login', async (req, res) => {
     const { username, password } = req.body; //add rest of data needed...

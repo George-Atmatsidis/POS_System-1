@@ -104,8 +104,53 @@ class PartsManagement:
         clear()
     
     def start(self):
-        print("You are in Parts Management\n")
-        sleep(2)
+        self.__printHeader__()
+        print("Input 'X' for adding a new part\n'*' represents an anything character in pattern")
+        pattern = input(">>>>:")
+        if (pattern == 'X' or pattern == 'x'):
+            partNumber = input("PartNumber:")
+            description = input("Description:")
+            quantity = int(input("Quantity:"))
+            quanOO = int(input("Quantity On Order:"))
+            price = float(input("Price:"))
+            brand = input("Brand:")
+            cost = float(input("Cost:"))
+            source = input("Source:")
+            classID = int(input("Class ID:"))
+            payload = {
+                "PartNumber":partNumber,
+                "Description":description,
+                "Quantity":quantity,
+                "QuantityOO":quanOO,
+                "Price":price,
+                "Brand":brand,
+                "Cost":cost,
+                "Source":source,
+                "ClassID":classID
+            }
+            payload = dumps(payload)
+            res = self.server.put(route="/inventoryManagement/partsManagement/add", data=payload)
+            if(res.status_code == 201):
+                print("Part Posted")
+            else:
+                print("FAILED")
+            sleep(2)
+
+        else:
+            payload = {"PartNumberPattern":pattern}
+            payload = dumps(payload)
+            res = self.server.get(route="/inventoryManagement/partsManagement", data=payload)
+            header = res[0].keys()
+            rows = [x.values() for x in res]
+            print(tabulate(rows, header))
+            print("Done")
+            input() #wait for user to be done with results
+
+    def __printHeader__(self):
+        clear()
+        print(f'{(date.today()).strftime("%m/%d/%Y")}\t\t Parts Management\t\t {self.user}') #Header
+        print("\n")
+        
 
 class ClassManagement:
     def __init__(self, server):
