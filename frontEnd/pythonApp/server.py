@@ -44,11 +44,6 @@ class server:
             pass
         elif(response.status_code == 201):
             pass
-        elif (response.content):
-            try:
-                response = json.loads(response.content)
-            except json.decoder.JSONDecodeError as e:
-                pass
         else:
             raise ConnectionError("PUT request failed")
         return response

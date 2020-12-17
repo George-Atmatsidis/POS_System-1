@@ -152,34 +152,39 @@ app.post('/inventoryManagement/partsManagement/detailed', async (req, res) => {
 })
 
 app.get('/inventoryManagement/classManagement', async (req, res) => {
-    res.json({
+    res.json([{
         ClassID: 001,
         ClassDescr: "Gears",
         Margin1: 1.2,
         Margin2: 1.6,
         Margin3: 2.0
-    }); //send stubbed class
+    }]); //send stubbed class
 })
 
 app.post('/inventoryManagement/classmanagement/update', async (req, res) => {
-    const { ClassID, ClassDescr, Margin1 } = req.body;
+    console.log("POST request on: '/inventoryManagement/classmanagement/update'")
+    const { ClassID, ClassDescr, Margin1, Margin2, Margin3 } = req.body;
+    console.log(ClassID)
     //update class
     res.sendStatus(200); //All Good
 })
 
 app.get('/customerManagement', async (req, res) => {
     const { Name } = req.body;
-    res.json({
+    res.json([{
         ID: 001,
         Name: "Redstone",
         Addr: "1234 Redstone St. Ruelle, AR, 72451",
         Phone: "501-405-5124"
-    }); //Send stubbed Data
+    }]); //Send stubbed Data
 })
 
 app.get('/customerManagement/detailed', async (req, res) => {
     const { ID } = req.body;
     res.json({
+        Name: "Redstone",
+        Addr: "1234 Redstone St. Ruelle, AR, 72451",
+        Phone: "501-405-5124",
         BillingAddr: "POBox 203 Ruelle, AR, 72451",
         ShippingAddr: "ATTN: Robby 1234 Redstone St. Ruelle, AR, 72451",
         CityTax: 0.05,
@@ -206,15 +211,31 @@ app.put('/customerManagement/add', async (req, res) => {
 })
 
 app.get('/employeeManagement', async (req, res) => {
-    res.sendStatus(501); //Not Implemented
+    console.log(req.body.Name)
+    res.json([{
+        ID: 001,
+        Name: "Cade Powers",
+        Addr: "1234 Redstone St. Ruelle, AR, 72451",
+        Phone: "501-405-5124"
+    }])
 })
 
 app.get('/employeeManagement/detailed', async (req, res) => {
-    res.sendStatus(501); //Not Implemented
+    res.json({
+        Name: "Cade Powers",
+        Addr: "1234 Redstone St. Ruelle, AR, 72451",
+        Phone: "501-405-5124",
+        Pay: 15.00
+    }); //Send stubbed data
 })
 
-app.post('/employeeManagement/add', async (req, res) => {
-    res.sendStatus(501); //Not Implemented
+app.put('/employeeManagement/add', async (req, res) => {
+    const { Name,
+        Addr,
+        Phone,
+        Pay
+    } = req.body;
+    res.sendStatus(200); //Not Implemented
 })
 
 app.get('/partsCounter/invoice', async (req, res) => {
