@@ -40,9 +40,7 @@ class server:
         if(response.status_code == 501):
                 print("NOT IMPLEMENTED")
                 sleep(2)
-        elif(response.status_code == 200):
-            pass
-        elif(response.status_code == 201):
+        elif(response.status_code == 200 or response.status_code == 201):
             pass
         else:
             raise ConnectionError("PUT request failed")

@@ -313,6 +313,7 @@ class EmployeeManagement:
             print("Done")
             input() #wait for user to be done with results
 
+#Work orders and quotes are copied and pasted from invoice. The interface is exactly the same
 class Invoices:
     def __init__(self, server):
         self.server = server
@@ -320,8 +321,104 @@ class Invoices:
         clear()
     
     def start(self):
-        print("You are in Invoices\n")
-        sleep(2)
+        printHeader("Invoices", self.user)
+        print("'X' for new, 'S' for selecting invoice, Pattern for search")
+        userInput = input(">>>>:")
+        if(userInput == 'S' or userInput == 's'): #returns detailed info about invoice
+            userInput = int(input("Invoice ID: "))
+            clear()
+            payload = { "ID":userInput }
+            payload = dumps(payload)
+            invoiceRes = self.server.get("/partsCounter/invoice", data=payload)
+            payload = {
+                "ID":invoiceRes["CustomerID"]
+            }
+            payload = dumps(payload)
+            customerRes = self.server.get("/customerManagement/detailed", data=payload)
+            payload = {
+                "ID":invoiceRes["EmployeeID"]
+            }
+            payload = dumps(payload)
+            employeeRes = self.server.get("/employeeManagement/detailed", data=payload)
+            #now that I have all the data I need to display it
+            print("ID: ", invoiceRes["ID"])
+            print("Date Created: ", invoiceRes["Date"])
+            print("Name:  ", customerRes["Name"])
+            print("Address: ", customerRes["Addr"])
+            print("Phone: ", customerRes["Phone"])
+            print("Billing Address: ", customerRes["BillingAddr"])
+            print("Shipping Address: ", customerRes["ShippingAddr"])
+            print("Employee: ", employeeRes["Name"], "\n")
+            displayDataTable(invoiceRes["PartsList"])
+            print("Sub-Total: ".rjust(50), invoiceRes["SubTotal"])
+            print("Tax-Total: ".rjust(50), invoiceRes["TaxTotal"])
+            print("Total: ".rjust(50), invoiceRes["Total"])
+            input("Press enter when done")
+
+        elif(userInput == 'x' or userInput == 'X'): #user wants to create a new invoice
+            good = True
+            while(good):
+                clear()
+                userInput = int(input("Customer ID:"))
+                customerID = userInput
+                payload = { "CustomerID":userInput }
+                payload = dumps(payload)
+                customerInfo = self.server.get("/partsCounter/invoice/add", data=payload)
+                print("Name:  ", customerInfo["Name"])
+                userInput = input("Is this correct? (Y or N):")
+                if(userInput == 'y' or userInput == 'Y'):
+                    good = False # don't ask again
+                
+            partsList = []
+            print("Parts List")
+            while(True):
+                part = input("Part Number(input X to exit):")
+                if(part == 'x' or part == 'X'):
+                    break #exit loop
+                payload = { "PartNumber":part }
+                payload = dumps(payload)
+                partRes = self.server.get("/partsCounter/invoice/add", data=payload)
+                print("\tDescription:", partRes["Description"], "\tPrice:", partRes["Cost"]*(partRes["PriceM3"]/100), end="\t")
+                quantity = int(input("Quantity:"))
+                while (quantity > partRes["Quantity"] or quantity <= 0):
+                    if(quantity > partRes["Quantity"]):
+                        print("Not enough stock")
+                    else:
+                        print("Invalid Input(Cannot input 0 for quantity)")
+                    quantity = int(input("Quantity:"))
+                partsList.append({ "PartNumber":part, "Description":partRes["Description"], "Quantity":quantity, "Price":partRes["Cost"]*(partRes["PriceM3"]/100)})
+            payload = { "CustomerID":customerID, "Parts":partsList }
+            payload = dumps(payload)
+            totals = self.server.get("/partsCounter/invoice/add", data=payload)
+            print("Sub-Total: ".rjust(50), float(totals["SubTotal"]))
+            print("Tax-Total: ".rjust(50), float(totals["TaxTotal"]))
+            print("Total: ".rjust(50), float(totals["Total"]))
+            employeeID = input("Enter Employee ID to save and post(X to exit):") #used for confirmation
+            if (userInput == "x" or userInput == "X"): 
+                print("EXITING WITHOUT SAVING")
+                sleep(1)
+            else: #upload to server
+                payload = {
+                    "CustomerID":customerID,
+                    "EmployeeID":employeeID,
+                    "Parts":partsList,
+                    "SubTotal":totals["SubTotal"],
+                    "TaxTotal":totals["TaxTotal"],
+                    "Total":totals["Total"]
+                }
+                payload = dumps(payload)
+                response = self.server.put("/partsCounter/invoice/add", data=payload)
+                if (response.status_code == 200 or response.status_code == 201):
+                    clear()
+                    print("INVOICE POSTED SUCCESSFULLY")
+                    sleep(2)
+        else: #user input name
+            payload = { "CustomerName":userInput }
+            payload = dumps(payload)
+            res = self.server.get("partsCounter/invoice", data=payload)
+            displayDataTable(res) #display list of invoices with that pattern in name
+            input("Press enter when done")
+
 
 class PartsLookUp:
     def __init__(self, server):
@@ -347,8 +444,103 @@ class Quotes:
         clear()
     
     def start(self):
-        print("You are in Quotes\n")
-        sleep(2)
+        printHeader("Quote", self.user)
+        print("'X' for new, 'S' for selecting invoice, Pattern for search")
+        userInput = input(">>>>:")
+        if(userInput == 'S' or userInput == 's'): #user input ID to select input
+            userInput = int(input("Invoice ID: "))
+            clear()
+            payload = { "ID":userInput }
+            payload = dumps(payload)
+            invoiceRes = self.server.get("/partsCounter/quote", data=payload)
+            payload = {
+                "ID":invoiceRes["CustomerID"]
+            }
+            payload = dumps(payload)
+            customerRes = self.server.get("/customerManagement/detailed", data=payload)
+            payload = {
+                "ID":invoiceRes["EmployeeID"]
+            }
+            payload = dumps(payload)
+            employeeRes = self.server.get("/employeeManagement/detailed", data=payload)
+            #now that I have all the data I need to display it
+            print("ID: ", invoiceRes["ID"])
+            print("Date Created: ", invoiceRes["Date"])
+            print("Name:  ", customerRes["Name"])
+            print("Address: ", customerRes["Addr"])
+            print("Phone: ", customerRes["Phone"])
+            print("Billing Address: ", customerRes["BillingAddr"])
+            print("Shipping Address: ", customerRes["ShippingAddr"])
+            print("Employee: ", employeeRes["Name"], "\n")
+            displayDataTable(invoiceRes["PartsList"])
+            print("Sub-Total: ".rjust(50), invoiceRes["SubTotal"])
+            print("Tax-Total: ".rjust(50), invoiceRes["TaxTotal"])
+            print("Total: ".rjust(50), invoiceRes["Total"])
+            input("Press enter when done")
+
+        elif(userInput == 'x' or userInput == 'X'): #user wants to create a new invoice
+            good = True
+            while(good): #get and check customer ID
+                clear()
+                userInput = int(input("Customer ID:"))
+                customerID = userInput
+                payload = { "CustomerID":userInput }
+                payload = dumps(payload)
+                customerInfo = self.server.get("/partsCounter/quote/add", data=payload)
+                print("Name:  ", customerInfo["Name"])
+                userInput = input("Is this correct? (Y or N):")
+                if(userInput == 'y' or userInput == 'Y'):
+                    good = False # don't ask again
+                
+            partsList = []
+            print("Parts List")
+            while(True): #create parts list
+                part = input("Part Number(input X to exit):")
+                if(part == 'x' or part == 'X'):
+                    break #exit loop
+                payload = { "PartNumber":part }
+                payload = dumps(payload)
+                partRes = self.server.get("/partsCounter/quote/add", data=payload)
+                print("\tDescription:", partRes["Description"], "\tPrice:", partRes["Cost"]*(partRes["PriceM3"]/100), end="\t")
+                quantity = int(input("Quantity:"))
+                while (quantity > partRes["Quantity"] or quantity <= 0):
+                    if(quantity > partRes["Quantity"]):
+                        print("Not enough stock")
+                    else:
+                        print("Invalid Input(Cannot input 0 for quantity)")
+                    quantity = int(input("Quantity:"))
+                partsList.append({ "PartNumber":part, "Description":partRes["Description"], "Quantity":quantity, "Price":partRes["Cost"]*(partRes["PriceM3"]/100)})
+            payload = { "CustomerID":customerID, "Parts":partsList }
+            payload = dumps(payload)
+            totals = self.server.get("/partsCounter/quote/add", data=payload)
+            print("Sub-Total: ".rjust(50), float(totals["SubTotal"]))
+            print("Tax-Total: ".rjust(50), float(totals["TaxTotal"]))
+            print("Total: ".rjust(50), float(totals["Total"]))
+            employeeID = input("Enter Employee ID to save and post(X to quit):") #used for confirmation
+            if (userInput == "x" or userInput == "X"): #allows user to not save changes
+                print("EXITING WITHOUT SAVING")
+                sleep(1)
+            else: #upload to server
+                payload = {
+                    "CustomerID":customerID,
+                    "EmployeeID":employeeID,
+                    "Parts":partsList,
+                    "SubTotal":totals["SubTotal"],
+                    "TaxTotal":totals["TaxTotal"],
+                    "Total":totals["Total"]
+                }
+                payload = dumps(payload)
+                response = self.server.put("/partsCounter/quote/add", data=payload)
+                if (response.status_code == 200 or response.status_code == 201):
+                    clear()
+                    print("QUOTE POSTED SUCCESSFULLY")
+                    sleep(2)
+        else: #user input name returns 
+            payload = { "CustomerName":userInput }
+            payload = dumps(payload)
+            res = self.server.get("partsCounter/quote", data=payload)
+            displayDataTable(res) #display list of invoices with that pattern in name
+            input("Press enter when done")
 
 class WorkOrders:
     def __init__(self, server):
@@ -357,8 +549,103 @@ class WorkOrders:
         clear()
     
     def start(self):
-        print("You are in Work Orders\n")
-        sleep(2)
+        printHeader("Work Order", self.user)
+        print("'X' for new, 'S' for selecting invoice, Pattern for search")
+        userInput = input(">>>>:")
+        if(userInput == 'S' or userInput == 's'): #user input ID
+            userInput = int(input("Invoice ID: "))
+            clear()
+            payload = { "ID":userInput }
+            payload = dumps(payload)
+            invoiceRes = self.server.get("/partsCounter/workOrder", data=payload)
+            payload = {
+                "ID":invoiceRes["CustomerID"]
+            }
+            payload = dumps(payload)
+            customerRes = self.server.get("/customerManagement/detailed", data=payload)
+            payload = {
+                "ID":invoiceRes["EmployeeID"]
+            }
+            payload = dumps(payload)
+            employeeRes = self.server.get("/employeeManagement/detailed", data=payload)
+            #now that I have all the data I need to display it
+            print("ID: ", invoiceRes["ID"])
+            print("Date Created: ", invoiceRes["Date"])
+            print("Name:  ", customerRes["Name"])
+            print("Address: ", customerRes["Addr"])
+            print("Phone: ", customerRes["Phone"])
+            print("Billing Address: ", customerRes["BillingAddr"])
+            print("Shipping Address: ", customerRes["ShippingAddr"])
+            print("Employee: ", employeeRes["Name"], "\n")
+            displayDataTable(invoiceRes["PartsList"])
+            print("Sub-Total: ".rjust(50), invoiceRes["SubTotal"])
+            print("Tax-Total: ".rjust(50), invoiceRes["TaxTotal"])
+            print("Total: ".rjust(50), invoiceRes["Total"])
+            input("Press enter when done")
+
+        elif(userInput == 'x' or userInput == 'X'): #user wants to create a new invoice
+            good = True
+            while(good):
+                clear()
+                userInput = int(input("Customer ID:"))
+                customerID = userInput
+                payload = { "CustomerID":userInput }
+                payload = dumps(payload)
+                customerInfo = self.server.get("/partsCounter/workOrder/add", data=payload)
+                print("Name:  ", customerInfo["Name"])
+                userInput = input("Is this correct? (Y or N):")
+                if(userInput == 'y' or userInput == 'Y'):
+                    good = False # don't ask again
+                
+            partsList = []
+            print("Parts List")
+            while(True):
+                part = input("Part Number(input X to exit):")
+                if(part == 'x' or part == 'X'):
+                    break #exit loop
+                payload = { "PartNumber":part }
+                payload = dumps(payload)
+                partRes = self.server.get("/partsCounter/workOrder/add", data=payload)
+                print("\tDescription:", partRes["Description"], "\tPrice:", partRes["Cost"]*(partRes["PriceM3"]/100), end="\t")
+                quantity = int(input("Quantity:"))
+                while (quantity > partRes["Quantity"] or quantity <= 0):
+                    if(quantity > partRes["Quantity"]):
+                        print("Not enough stock")
+                    else:
+                        print("Invalid Input(Cannot input 0 for quantity)")
+                    quantity = int(input("Quantity:"))
+                partsList.append({ "PartNumber":part, "Description":partRes["Description"], "Quantity":quantity, "Price":partRes["Cost"]*(partRes["PriceM3"]/100)})
+            payload = { "CustomerID":customerID, "Parts":partsList }
+            payload = dumps(payload)
+            totals = self.server.get("/partsCounter/workOrder/add", data=payload)
+            print("Sub-Total: ".rjust(50), float(totals["SubTotal"]))
+            print("Tax-Total: ".rjust(50), float(totals["TaxTotal"]))
+            print("Total: ".rjust(50), float(totals["Total"]))
+            employeeID = input("Enter Employee ID to save and post(X to quit):") #used for confirmation
+            if (userInput == "x" or userInput == "X"): 
+                print("EXITING WITHOUT SAVING")
+                sleep(1)
+            else: #upload to server
+                payload = {
+                    "CustomerID":customerID,
+                    "EmployeeID":employeeID,
+                    "Parts":partsList,
+                    "SubTotal":totals["SubTotal"],
+                    "TaxTotal":totals["TaxTotal"],
+                    "Total":totals["Total"]
+                }
+                payload = dumps(payload)
+                response = self.server.put("/partsCounter/workOrder/add", data=payload)
+                if (response.status_code == 200 or response.status_code == 201):
+                    clear()
+                    print("WORK ORDER POSTED SUCCESSFULLY")
+                    sleep(2)
+        else: #user input name
+            payload = { "CustomerName":userInput }
+            payload = dumps(payload)
+            res = self.server.get("partsCounter/workOrder", data=payload)
+            displayDataTable(res) #display list of invoices with that pattern in name
+            input("Press enter when done")
 
 class History:
     def __init__(self, server):
@@ -382,4 +669,3 @@ class History:
         res = self.server.get("/partsCounter/history", data=payload)
         displayDataTable(res)
         input("Press enter when done")
-

@@ -181,6 +181,7 @@ app.get('/customerManagement', async (req, res) => {
 
 app.get('/customerManagement/detailed', async (req, res) => {
     const { ID } = req.body;
+    console.log("GET request on '/customerManagement/detailed'");
     res.json({
         Name: "Redstone",
         Addr: "1234 Redstone St. Ruelle, AR, 72451",
@@ -221,6 +222,7 @@ app.get('/employeeManagement', async (req, res) => {
 })
 
 app.get('/employeeManagement/detailed', async (req, res) => {
+    console.log("GET request on '/employeeManagement/detailed'");
     res.json({
         Name: "Cade Powers",
         Addr: "1234 Redstone St. Ruelle, AR, 72451",
@@ -239,18 +241,53 @@ app.put('/employeeManagement/add', async (req, res) => {
 })
 
 app.get('/partsCounter/invoice', async (req, res) => {
-    const { CustomerName } = req.body;
+    CustomerName = req.body.ID;
+    console.log("GET request on '/partsCounter/invoice'");
     res.json({
+        ID:30001,
+        CustomerID:001,
+        EmployeeID:001,
+        PartsList: [{ partID: 4512, quantity: 2, price: 22.00 }, { partID: 5124, quantity: 1, price: 11.00 }],
+        SubTotal:55.00,
+        TaxTotal:10.00,
+        Total:65.00,
+        Date:"12/17/2020"
+    })
+    /*res.json([{
         ID: 30001,
         Customer: "Redstone",
         Date: "10/07/2020",
         FirstPart: "101-45214-000",
         Total: 1000.23
-    }); //Send stubbed data
+    }]);*/
+     //Send stubbed data
+})
+
+app.get('/partsCounter/invoice/add', async (req, res) => {
+    /*res.json({
+        Name: "Redstone",
+        BillingAddr: "POBox 203 Ruelle, AR, 72451",
+        ShippingAddr: "ATTN: Robby 1234 Redstone St. Ruelle, AR, 72451",
+        Phone: "501-405 - 5124",
+        Email: "test@google.com"
+    });
+    res.json({
+        Description: "Gear",
+        PriceM1: 140.00,
+        PriceM2: 160.00,
+        PriceM3: 200.00,
+        Cost: 100.00,
+        Quantity: 2
+    })*/
+    res.json({
+        SubTotal: 640.00,
+        TaxTotal: 112.00,
+        Total: 752.00
+    })
 })
 
 app.post('/partsCounter/invoice/add', async (req, res) => {
-    res.sendStatus(501); //Not Implemented
+    res.sendStatus(201);
 })
 
 app.put('/partsCounter/workOrder/update', async (req, res) => {
